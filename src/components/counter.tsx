@@ -8,16 +8,15 @@ export default function Counter() {
   const [isPlaying, setIsPlaying] = useState(true);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCounter((prev) => prev + 1);
-    }, 1000);
-
-    if (!isPlaying) {
-      clearInterval(timer);
+    if (isPlaying) {
+      intervalId.current = setInterval(() => {
+        setCounter((prev) => prev + 1);
+      }, 1000);
     }
-    intervalId.current = timer;
 
-    return () => clearInterval(timer); 
+    return () => {
+      if (intervalId.current) clearInterval(intervalId.current);
+    };
   }, [isPlaying]);
 
   const hours = Math.floor(counter / 3600);
